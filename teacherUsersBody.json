@@ -1,0 +1,41 @@
+{
+  "teachers": [
+    {
+      "id": "3",
+      "name": "John2",
+      "age": 34,
+      "gender": "male",
+      "student": false,
+      "teacher": true,
+
+      "wage": 100000,
+      "start-date": "30-12-2023",
+      "contract-end-date": "29-9-2030",
+
+      "course-teaching": ["Math 3100", "Math 3000"],
+      "rating": 4.3,
+      "filed": "Math"
+    },{
+      "id": "4",
+      "name": "John",
+      "age": 34,
+      "gender": "male",
+      "student": false,
+      "teacher": true,
+
+      "wage": 102000,
+      "start-date": "30-12-2023",
+      "contract-end-date": "29-9-2030",
+
+      "course-teaching": ["Math 3100", "Math 3000"],
+      "rating": 5,
+      "filed": "Comp Sci"
+
+    }
+
+
+
+  ]
+
+
+}
