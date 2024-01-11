@@ -1,4 +1,8 @@
 {
+
+  "amount": 2,
+  "type": "teachers",
+  
   "teachers": [
     {
       "id": "3",

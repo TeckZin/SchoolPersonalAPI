@@ -1,0 +1,15 @@
+{
+  "id": "4",
+  "name": "John",
+  "age": 34,
+  "gender": "male",
+  "student": false,
+  "teacher": true,
+
+  "Major": "Chem",
+  "Gpa": 3.4,
+  "Course": ["N/A"],
+  "Professors": ["John"]
+
+
+}

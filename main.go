@@ -6,26 +6,24 @@ import (
 	"net/http"
 )
 
-type List struct {
+type UserList struct {
 	Amount int    `json:"amount"`
 	Type   string `json:"type"`
 }
 
 type Students struct {
-	List
-
+	UserList
 	Students []Student `json:"students"`
 }
 
 type Teachers struct {
-	List
+	UserList
 	Teachers []Teacher `json:"teachers"`
 }
 
 type AllPersonals struct {
-	List
-	Teachers []Teacher  `json:"teachers"`
-	Students []Students `json:"students"`
+	Teachers Teachers `json:"teachers-user"`
+	Students Students `json:"students-user"`
 }
 
 type Personal struct {
@@ -76,11 +74,11 @@ var teachersDataBase = []Teacher{
 	}},
 }
 
-var studentDataBase = []Student{}
+var studentsDataBase = []Student{}
 
 func (students Students) allStudentsList() {
 	for _, student := range students.Students {
-		studentDataBase = append(studentDataBase, student)
+		studentsDataBase = append(studentsDataBase, student)
 	}
 
 }
@@ -97,13 +95,13 @@ func getTeachersList(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, teachersDataBase)
 }
 
-func getStudentList(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, studentDataBase)
+func getStudentsList(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, studentsDataBase)
 }
 
 func getAllList(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, teachersDataBase)
-	c.IndentedJSON(http.StatusOK, studentDataBase)
+	c.IndentedJSON(http.StatusOK, studentsDataBase)
 }
 
 func createStudent(c *gin.Context) {
@@ -113,7 +111,7 @@ func createStudent(c *gin.Context) {
 		return
 	}
 
-	studentDataBase = append(studentDataBase, newStudent)
+	studentsDataBase = append(studentsDataBase, newStudent)
 
 	c.IndentedJSON(http.StatusCreated, newStudent)
 
@@ -130,11 +128,29 @@ func createTeacher(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newTeacher)
 }
 
-func createUser(c *gin.Context) {
+func createUsers(c *gin.Context) {
+	var allUsers AllPersonals
+	fmt.Println("here")
+	if err := c.BindJSON(&allUsers); err != nil {
+		return
+	}
+	var newTeachers = allUsers.Teachers
+
+	newTeachers.allTeachersList()
+
+	c.IndentedJSON(http.StatusCreated, newTeachers)
+
+	var newStudents = allUsers.Students
+
+	newStudents.allStudentsList()
+
+	c.IndentedJSON(http.StatusCreated, newStudents)
+
+	c.IndentedJSON(http.StatusCreated, allUsers)
 
 }
 
-func createStudentList(c *gin.Context) {
+func createStudentsList(c *gin.Context) {
 	var studentsList Students
 	if err := c.BindJSON(&studentsList); err != nil {
 		return
@@ -146,7 +162,7 @@ func createStudentList(c *gin.Context) {
 
 }
 
-func createTeacherList(c *gin.Context) {
+func createTeachersList(c *gin.Context) {
 	var teachersList Teachers
 
 	if err := c.BindJSON(&teachersList); err != nil {
@@ -166,21 +182,21 @@ func main() {
 	fmt.Println("Launch API")
 	router := gin.Default()
 
-	router.GET("/AllDataBase", getAllList)
+	router.GET("/AllDataBases", getAllList)
 
-	router.POST("/AllDataBase", createUser)
+	router.POST("/AllDataBases/createUsersList", createUsers)
 
 	router.GET("/TeacherDataBase", getTeachersList)
 
-	router.POST("/TeacherDataBase/addTeacher", createTeacher)
+	router.POST("/TeachersDataBase/addTeacher", createTeacher)
 
-	router.POST("/TeacherDataBase/addTeacherList", createTeacherList)
+	router.POST("/TeachersDataBase/addTeachersList", createTeachersList)
 
-	router.GET("/StudentDataBase", getStudentList)
+	router.GET("/StudentsDataBase", getStudentsList)
 
-	router.POST("/StudentDataBase/addStudent", createStudent)
+	router.POST("/StudentsDataBase/addStudent", createStudent)
 
-	router.POST("/StudentDataBase/addStudentsList", createStudentList)
+	router.POST("/StudentsDataBase/addStudentsList", createStudentsList)
 
 	router.Run("localhost:8080")
 }

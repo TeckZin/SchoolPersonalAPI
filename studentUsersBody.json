@@ -1,0 +1,32 @@
+{
+  "amount": 2,
+  "type": "students",
+  "students": [
+    {
+      "id": "1",
+      "name": "John2",
+      "age": 34,
+      "gender": "male",
+      "student": true,
+      "teacher": false,
+
+      "Major": "Chem",
+      "Gpa": 3.4,
+      "Course": ["N/A", "N/A2"],
+      "Professors": ["John2"]
+
+    },{
+      "id": "2",
+      "name": "John",
+      "age": 34,
+      "gender": "male",
+      "student": true,
+      "teacher": false,
+
+      "Major": "Chem",
+      "Gpa": 3.4,
+      "Course": ["N/A"],
+      "Professors": ["John"]
+
+    }]
+}

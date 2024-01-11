@@ -1,0 +1,76 @@
+{
+
+  "teachers-user": {
+    "amount": 2,
+    "type": "teachers",
+    "teachers": [ {
+      "id": "5",
+      "name": "John22",
+      "age": 34,
+      "gender": "male",
+      "student": false,
+      "teacher": true,
+
+      "wage": 100000,
+      "start-date": "30-12-2023",
+      "contract-end-date": "29-10-2030",
+
+      "course-teaching": ["Math 3100", "Math 3000"],
+      "rating": 4.3,
+      "filed": "Tech"
+    },{
+      "id": "6",
+      "name": "John34",
+      "age": 34,
+      "gender": "female",
+      "student": false,
+      "teacher": true,
+
+      "wage": 102000,
+      "start-date": "30-12-2024",
+      "contract-end-date": "29-9-2030",
+
+      "course-teaching": ["Math 3100", "Math 3000"],
+      "rating": 5,
+      "filed": "Comp Sci"
+
+    }]
+
+
+
+  },
+
+  "students-user": {
+    "amount": 2,
+    "type": "students",
+    "students": [
+      {
+      "id": "1",
+      "name": "John2",
+      "age": 34,
+      "gender": "male",
+      "student": true,
+      "teacher": false,
+
+      "Major": "Chem",
+      "Gpa": 3.4,
+      "Course": ["N/A"],
+      "Professors": ["John2"]
+
+      },{
+        "id": "2",
+        "name": "John",
+        "age": 34,
+        "gender": "male",
+        "student": true,
+        "teacher": false,
+
+        "Major": "Chem",
+        "Gpa": 3.4,
+        "Course": ["N/A"],
+        "Professors": ["John"]
+
+      }]
+  }
+
+}
