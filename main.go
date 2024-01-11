@@ -3,8 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"math/rand"
 	"net/http"
+	"strconv"
+	"strings"
 )
+
+const AMOUNT_OF_USERS = 999_999
 
 type UserList struct {
 	Amount int    `json:"amount"`
@@ -57,6 +62,8 @@ type Teacher struct {
 	Filed          string   `json:"filed"`
 }
 
+var allIDDB = []string{}
+
 var teachersDataBase = []Teacher{
 
 	{Rating: 3.2, CourseTeaching: []string{"English 1000", "English 2000"}, Filed: "English", Staff: Staff{
@@ -76,18 +83,74 @@ var teachersDataBase = []Teacher{
 
 var studentsDataBase = []Student{}
 
-func (students Students) allStudentsList() {
+func (students *Students) allStudentsList() {
 	for _, student := range students.Students {
+		student.changeID()
 		studentsDataBase = append(studentsDataBase, student)
+
 	}
 
 }
 
-func (teachers Teachers) allTeachersList() {
+func (teachers *Teachers) allTeachersList() {
 	for _, teacher := range teachers.Teachers {
-		fmt.Println(teacher)
+		//fmt.Println(teacher)
+		teacher.changeID()
 		teachersDataBase = append(teachersDataBase, teacher)
+
 	}
+
+}
+
+func (teacher *Teacher) changeID() {
+
+	//fmt.Println(teacher.ID)
+	teacher.ID = generateID()
+	//fmt.Println(teacher.ID)
+
+	//fmt.Println(teachersDataBase)
+	allIDDB = append(allIDDB, teacher.ID)
+}
+
+func (student *Student) changeID() {
+	student.ID = generateID()
+
+	allIDDB = append(allIDDB, student.ID)
+
+}
+
+func checkID(id string) bool {
+
+	for _, v := range allIDDB {
+		if id == v {
+			return true
+		}
+	}
+	return false
+}
+
+func generateID() string {
+	randomNumber := rand.Intn(AMOUNT_OF_USERS)
+	randomNumberStr := strconv.Itoa(randomNumber)
+
+	//fmt.Println(len(strconv.Itoa(AMOUNT_OF_USERS)))
+
+	if len(randomNumberStr) < len(strconv.Itoa(AMOUNT_OF_USERS)) {
+		buffer := len(strconv.Itoa(AMOUNT_OF_USERS)) - len(randomNumberStr)
+
+		bufferStr := strings.Repeat("0", buffer)
+
+		randomNumberStr = bufferStr + randomNumberStr
+
+	}
+
+	flag := checkID(randomNumberStr)
+
+	if flag {
+		return generateID()
+	}
+
+	return randomNumberStr
 
 }
 
@@ -113,6 +176,8 @@ func createStudent(c *gin.Context) {
 
 	studentsDataBase = append(studentsDataBase, newStudent)
 
+	newStudent.changeID()
+
 	c.IndentedJSON(http.StatusCreated, newStudent)
 
 }
@@ -123,7 +188,7 @@ func createTeacher(c *gin.Context) {
 	if err := c.BindJSON(&newTeacher); err != nil {
 		return
 	}
-
+	newTeacher.changeID()
 	teachersDataBase = append(teachersDataBase, newTeacher)
 	c.IndentedJSON(http.StatusCreated, newTeacher)
 }
